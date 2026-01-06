@@ -1,0 +1,370 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Core Dark Background - Deep Violet */
+    --background: 260 25% 4%;
+    --foreground: 0 0% 98%;
+
+    /* Card/Panel (Glassmorphism base) */
+    --card: 260 20% 8%;
+    --card-foreground: 0 0% 98%;
+
+    /* Popover */
+    --popover: 260 20% 6%;
+    --popover-foreground: 0 0% 98%;
+
+    /* Primary - Vibrant Purple/Violet */
+    --primary: 280 100% 65%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 280 100% 70%;
+
+    /* Secondary - Muted Dark Violet */
+    --secondary: 260 20% 12%;
+    --secondary-foreground: 0 0% 90%;
+
+    /* Muted */
+    --muted: 260 15% 18%;
+    --muted-foreground: 260 10% 55%;
+
+    /* Accent - Magenta Pink */
+    --accent: 320 100% 65%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Destructive */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    /* Borders & Inputs */
+    --border: 260 20% 20%;
+    --input: 260 15% 15%;
+    --ring: 280 100% 65%;
+
+    --radius: 0.75rem;
+
+    /* Glass Effect Tokens */
+    --glass-bg: 260 20% 10% / 0.6;
+    --glass-border: 280 100% 65% / 0.3;
+    --glass-glow: 280 100% 65% / 0.15;
+
+    /* Neon Glow - Purple */
+    --neon-glow: 0 0 20px hsl(280 100% 65% / 0.5), 0 0 40px hsl(280 100% 65% / 0.3), 0 0 60px hsl(280 100% 65% / 0.1);
+    --neon-glow-strong: 0 0 30px hsl(280 100% 65% / 0.7), 0 0 60px hsl(280 100% 65% / 0.5), 0 0 100px hsl(280 100% 65% / 0.3);
+
+    /* Sidebar (keep for compatibility) */
+    --sidebar-background: 260 20% 6%;
+    --sidebar-foreground: 0 0% 90%;
+    --sidebar-primary: 280 100% 65%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 260 15% 15%;
+    --sidebar-accent-foreground: 0 0% 90%;
+    --sidebar-border: 260 20% 20%;
+    --sidebar-ring: 280 100% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+    cursor: none;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Orbitron', sans-serif;
+  }
+
+  a, button {
+    cursor: none;
+  }
+}
+
+@layer components {
+  /* Glassmorphism Panel */
+  .glass-panel {
+    @apply relative overflow-hidden rounded-xl;
+    background: hsl(var(--glass-bg));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid hsl(var(--glass-border));
+  }
+
+  .glass-panel-glow {
+    @apply glass-panel;
+    box-shadow: 0 0 30px hsl(var(--glass-glow)), inset 0 0 60px hsl(280 100% 65% / 0.05);
+  }
+
+  /* Neon Border */
+  .neon-border {
+    border: 1px solid hsl(var(--primary));
+    box-shadow: var(--neon-glow);
+  }
+
+  .neon-border-strong {
+    border: 2px solid hsl(var(--primary));
+    box-shadow: var(--neon-glow-strong);
+  }
+
+  /* Neon Text */
+  .neon-text {
+    color: hsl(var(--primary));
+    text-shadow: 0 0 10px hsl(280 100% 65% / 0.8), 0 0 20px hsl(280 100% 65% / 0.5), 0 0 40px hsl(280 100% 65% / 0.3);
+  }
+
+  /* Gradient Text */
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(320 100% 70%), hsl(280 100% 75%), hsl(260 100% 70%));
+  }
+
+  /* Button Variants */
+  .btn-neon {
+    @apply relative px-8 py-3 rounded-lg font-semibold uppercase tracking-wider transition-all duration-300;
+    background: transparent;
+    border: 2px solid hsl(var(--primary));
+    color: hsl(var(--primary));
+    box-shadow: 0 0 15px hsl(280 100% 65% / 0.3);
+  }
+
+  .btn-neon:hover {
+    background: hsl(var(--primary));
+    color: hsl(var(--background));
+    box-shadow: var(--neon-glow-strong);
+    transform: translateY(-2px);
+  }
+
+  .btn-neon-fill {
+    @apply relative px-8 py-3 rounded-lg font-semibold uppercase tracking-wider transition-all duration-300;
+    background: linear-gradient(135deg, hsl(280 100% 60%), hsl(260 100% 55%));
+    border: none;
+    color: white;
+    box-shadow: 0 0 20px hsl(280 100% 65% / 0.4);
+  }
+
+  .btn-neon-fill:hover {
+    box-shadow: var(--neon-glow-strong);
+    transform: translateY(-2px) scale(1.02);
+  }
+
+  /* Animated Background Shader */
+  .shader-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: linear-gradient(135deg, hsl(260 25% 4%) 0%, hsl(260 30% 8%) 50%, hsl(280 35% 8%) 100%);
+  }
+
+  /* Vignette Overlay */
+  .vignette {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(ellipse at center, transparent 0%, hsl(260 25% 4% / 0.4) 70%, hsl(260 25% 4% / 0.8) 100%);
+  }
+
+  /* Noise Overlay */
+  .noise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.02;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  }
+
+  /* Glossy surface effect */
+  .glossy-surface {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glossy-surface::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(280 100% 80% / 0.1),
+      transparent
+    );
+    transition: left 0.5s ease;
+  }
+
+  .glossy-surface:hover::before {
+    left: 100%;
+  }
+}
+
+@layer utilities {
+  /* Scroll Animations */
+  .animate-fade-up {
+    animation: fadeUp 0.8s ease-out forwards;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.5s ease-out forwards;
+  }
+
+  .animate-glow-pulse {
+    animation: glowPulse 3s ease-in-out infinite;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-gradient {
+    animation: gradientShift 8s ease-in-out infinite;
+    background-size: 200% 200%;
+  }
+
+  .animate-shimmer {
+    animation: shimmer 2s linear infinite;
+    background-size: 200% 100%;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px hsl(280 100% 65% / 0.3), 0 0 40px hsl(280 100% 65% / 0.1);
+  }
+  50% {
+    box-shadow: 0 0 30px hsl(280 100% 65% / 0.5), 0 0 60px hsl(280 100% 65% / 0.2);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotateX(0deg) rotateY(0deg);
+  }
+  25% {
+    transform: translateY(-10px) rotateX(2deg) rotateY(-2deg);
+  }
+  50% {
+    transform: translateY(-5px) rotateX(-1deg) rotateY(2deg);
+  }
+  75% {
+    transform: translateY(-15px) rotateX(1deg) rotateY(-1deg);
+  }
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary) / 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.7);
+}
+
+/* Hide default cursor on interactive elements */
+@media (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+}
+
+.icon-wrapper {
+  width: 1.25em;
+  height: 1.25em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: transparent;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.25));
+}
+

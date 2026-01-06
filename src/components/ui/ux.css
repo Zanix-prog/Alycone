@@ -1,0 +1,65 @@
+/* ===============================
+   GLOBAL UX / PERFORMANCE LAYER
+   =============================== */
+
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+}
+
+body {
+  -webkit-overflow-scrolling: touch;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a {
+  touch-action: manipulation;
+}
+
+.testimonial-section {
+  padding: 6rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.testimonial-carousel {
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  overflow: hidden;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.testimonial-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: auto;
+  opacity: 0;
+  transform: translateX(30px) scale(0.96);
+  transition:
+    opacity 0.35s ease,
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  border-radius: 18px;
+  pointer-events: none;
+}
+
+.testimonial-img.active {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  position: relative;
+  pointer-events: auto;
+}
+
+@media (max-width: 640px) {
+  .testimonial-carousel {
+    max-width: 92vw;
+  }
+}
