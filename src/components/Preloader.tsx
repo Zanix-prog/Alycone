@@ -11,10 +11,32 @@ const Preloader = ({ onComplete }: PreloaderProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const progressRef = useRef(0);
 
+  // ✅ Prevent rerun
   useEffect(() => {
     const hasRun = sessionStorage.getItem('alycone_preloader_run');
     if (hasRun) onComplete();
   }, [onComplete]);
+
+  // ✅ Canvas resize fix (REMOVES BLACK BOX)
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const resizeCanvas = () => {
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+
+      const ctx = canvas.getContext('2d');
+      if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    return () => window.removeEventListener('resize', resizeCanvas);
+  }, []);
 
   const handleSkip = useCallback(() => {
     sessionStorage.setItem('alycone_preloader_run', 'true');
@@ -73,16 +95,20 @@ const Preloader = ({ onComplete }: PreloaderProps) => {
           animate={phase === 'zooming' ? { scale: 15, opacity: 0 } : { scale: 1, opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: phase === 'zooming' ? 1.2 : 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden"
+          className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden bg-black"
         >
-          <canvas ref={canvasRef} className="absolute inset-0 bg-black" />
+          {/* ✅ FIXED CANVAS */}
+          <canvas
+            ref={canvasRef}
+            className="absolute inset-0 pointer-events-none"
+          />
 
           <motion.div
             className="relative z-10 flex flex-col items-center"
             animate={phase === 'zooming' ? { scale: 3, opacity: 0 } : { scale: 1, opacity: 1 }}
             transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
           >
-            {/* LOGO BLOCK */}
+            {/* LOGO */}
             <motion.div
               initial={{ scale: 0, rotate: -180 }}
               animate={{ scale: 1, rotate: 0 }}
@@ -123,7 +149,6 @@ const Preloader = ({ onComplete }: PreloaderProps) => {
               </motion.div>
             </motion.div>
 
-            {/* TEXT */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -134,7 +159,6 @@ const Preloader = ({ onComplete }: PreloaderProps) => {
 
             <p className="text-xs tracking-[0.6em] opacity-50 mt-2">CLIENT</p>
 
-            {/* PROGRESS */}
             <div className="mt-10 w-52 h-[2px] bg-white/10 overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-purple-500 to-pink-500"
